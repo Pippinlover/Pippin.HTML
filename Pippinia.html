@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pippin's Whimsical Journey</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input, button {
+            margin: 5px 0;
+            padding: 10px;
+            width: 250px;
+        }
+        #output {
+            margin-top: 20px;
+            white-space: pre-wrap; /* Preserve whitespace */
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        #questionnaire {
+            display: none; /* Initially hidden */
+        }
+        #playAgainButton {
+            display: none; /* Initially hidden */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Pippin's Whimsical Journey</h1>
+    
+    <div id="questionnaire">
+        <div id="question"></div>
+        <input type="text" id="answer" placeholder="Your Answer">
+        <button id="nextButton">Next</button>
+    </div>
+
+    <div id="output"></div>
+    <button id="playAgainButton">Play Again</button>
+
+    <script>
+        let userName, setting, challenge, resolution;
+        let step = 0;
+
+        document.getElementById('nextButton').onclick = function() {
+            const answer = document.getElementById('answer').value.trim();
+
+            if (step === 0) {
+                userName = answer;
+                if (!userName) {
+                    displayQuestion("Please enter your name:");
+                    return;
+                }
+                displayQuestion(`Hey ${userName}, for your journey, where is your Pippin? (e.g., a magical forest)`);
+            } else if (step === 1) {
+                setting = answer;
+                if (!setting) {
+                    displayQuestion("Please provide a setting:");
+                    return;
+                }
+                displayQuestion(`So Pippin is in a ${setting}. What is his challenge? (e.g., lost a rainbow)`);
+            } else if (step === 2) {
+                challenge = answer;
+                if (!challenge) {
+                    displayQuestion("Please provide a challenge:");
+                    return;
+                }
+                displayQuestion(`${challenge} is a big challenge! How will we overcome it together? (e.g., found it with friends)`);
+            } else if (step === 3) {
+                resolution = answer;
+                if (!resolution) {
+                    displayQuestion("Please provide a resolution:");
+                    return;
+                }
+                createStory(userName, setting, challenge, resolution);
+            }
+
+            step++;
+            document.getElementById('answer').value = ''; // Clear the input field
+        };
+
+        function displayQuestion(question) {
+            document.getElementById('question').innerText = question;
+            document.getElementById('questionnaire').style.display = 'block'; // Show the questionnaire
+        }
+
+        function createStory(userName, setting, challenge, resolution) {
+            const stories = [
+                `In the magical land of ${setting}, Pippin, a loving whimsical unicorn created by his father, Yohei, woke up one sunny morning with a twinkle in his eye. Today was the day he would explore the enchanted forest, filled with shimmering flowers and singing birds. But as he pranced through the forest, he suddenly faced a daunting challenge: ${challenge}.
+
+                Determined to find a way to overcome this challenge, Pippin called upon you, dear ${userName}, to join him on this adventurous quest. Together, you remembered Yohei’s wise words: “The light within you shines the brightest when you share it with others.” 
+
+                After a delightful journey filled with joy and discovery, you found that the key to overcoming this challenge was believing in yourselves and helping each other. With your combined efforts, you successfully resolved the challenge: ${resolution}. With a joyful heart, Pippin danced under a rainbow, celebrating the magic of love and friendship together.`,
+
+                `Once upon a time in the whimsical land of ${setting}, Pippin the unicorn found himself in the midst of a grand adventure. One sunny day, while frolicking in a meadow of candy-colored flowers, Pippin discovered that a great challenge awaited him: ${challenge}. Worried, he realized that the beloved flower fairy had gone missing, and without her magic, the flowers would lose their colors forever.
+
+                Remembering how Yohei, his father, had taught him the importance of kindness and bravery, Pippin knew he needed help. So he called upon you, ${userName}, his best friend. Together, you embarked on a journey to overcome the challenge of finding the flower fairy.
+
+                After overcoming playful challenges and solving riddles, you finally found the flower fairy, trapped in a web of enchanted vines. With teamwork and a sprinkle of kindness, you freed her, thus resolving the challenge: ${resolution}. Pippin and you celebrated with a joyful dance, surrounded by flowers that twinkled with happiness once more.`,
+
+                `In the sparkling kingdom of ${setting}, Pippin, the whimsical unicorn created by the magical hands of Yohei, woke up to find the skies filled with dark clouds. The annual Festival of Lights was just days away, but a significant challenge loomed: ${challenge}.
+
+                Pippin felt a flutter of worry in his heart, for he remembered how Yohei had once told him that light comes from within. Determined to save the festival, Pippin enlisted your help, brave ${userName}. Together, you set off on a quest to overcome this challenge.
+
+                You journeyed across valleys and over hills, sharing stories and laughter along the way. After a series of playful challenges and heartwarming moments, you found the fireflies trapped by a grumpy old troll who just needed a friend. With your charm and kindness, you resolved the challenge: ${resolution}. The fireflies danced around you, lighting up the night as you returned to the kingdom, making the Festival of Lights the brightest one ever!`,
+
+                // New stories added below
+                `In the enchanted garden of ${setting}, Pippin the unicorn noticed that the flowers were wilting. The challenge was clear: ${challenge}. Pippin called upon you, ${userName}, to help him restore the garden's beauty. Together, you discovered that the secret to revitalizing the flowers was the ancient song of nature. With your voices harmonizing, the flowers bloomed again, resolving the challenge: ${resolution}.`,
+
+                `Deep in the heart of ${setting}, Pippin found a hidden cave filled with sparkling crystals. However, a mischievous sprite had hidden the magic crystals, presenting Pippin with a challenge: ${challenge}. With your cleverness and Pippin's bravery, you devised a plan to outsmart the sprite. Together, you solved the sprite's riddles and retrieved the crystals, successfully resolving the challenge: ${resolution}.`,
+
+                `One day, while exploring ${setting}, Pippin stumbled upon a giant, ancient tree that held the wisdom of the ages. But the tree was sad because it had lost its voice, creating the challenge: ${challenge}. Pippin and you decided to help the tree regain its voice. With a sprinkle of magic and a lot of love, you sang to the tree, bringing back its powerful voice and resolving the challenge: ${resolution}.`,
+
+                `In the mystical land of ${setting}, Pippin discovered a hidden treasure map. The challenge was to find the treasure, which was said to grant the heart's desire: ${challenge}. Pippin, with your adventurous spirit, followed the clues, overcoming obstacles together. In the end, you found the treasure chest filled with friendship and joy, resolving the challenge: ${resolution}.`,
+
+                `While wandering through ${setting}, Pippin encountered a river that had run dry. The challenge was to bring back the water: ${challenge}. You and Pippin worked together to find the source of the river and restore its flow. With teamwork and determination, you succeeded, resolving the challenge: ${resolution}.`,
+
+                `In the whimsical kingdom of ${setting}, Pippin learned about a lost magical artifact that could grant wishes. The challenge was to retrieve it: ${challenge}. With your brave heart and Pippin's charm, you traversed the kingdom, faced trials, and ultimately found the artifact, resolving the challenge: ${resolution}.`,
+
+                `During a sunny day in ${setting}, Pippin discovered that the stars had disappeared from the night sky. The challenge was to bring them back: ${challenge}. Together, you crafted a beautiful lantern that brightened the sky, restoring the stars and resolving the challenge: ${resolution}.`,
+
+                `In the vibrant land of ${setting}, Pippin found out that the music of the forest had gone silent. The challenge was to restore the melody: ${challenge}. With your combined creativity, you played instruments made of twigs and leaves, filling the forest with music again and resolving the challenge: ${resolution}.`,
+
+                `In the colorful world of ${setting}, Pippin discovered a magical well that had stopped granting wishes. The challenge was to find out why: ${challenge}. You both embarked on a quest and discovered that the well needed a touch of kindness. After performing good deeds, the well began to sparkle with magic once more, resolving the challenge: ${resolution}.`
+            ];
+
+            const randomIndex = Math.floor(Math.random() * stories.length);
+            const story = stories[randomIndex];
+
+            document.getElementById('output').innerText = story;
+            document.getElementById('questionnaire').style.display = 'none'; // Hide the questionnaire
+            document.getElementById('playAgainButton').style.display = 'block'; // Show the play again button
+        }
+
+        document.getElementById('playAgainButton').onclick = function() {
+            // Reset the game state
+            step = 0;
+            userName = '';
+            setting = '';
+            challenge = '';
+            resolution = '';
+            document.getElementById('output').innerText = '';
+            document.getElementById('playAgainButton').style.display = 'none'; // Hide the play again button
+            displayQuestion("Please enter your name:");
+        };
+
+        // Start the journey
+        displayQuestion("Please enter your name:");
+        document.getElementById('questionnaire').style.display = 'block'; // Show the questionnaire
+    </script>
+
+</body>
+</html>
